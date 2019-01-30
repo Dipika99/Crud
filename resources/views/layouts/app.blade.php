@@ -9,9 +9,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
+	
+    <script src="{{ asset('public/js/jquery.js') }}" ></script>
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+	
 </head>
 <body>
     <div id="app">
@@ -31,6 +32,7 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
+					
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -46,9 +48,12 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+							 <li><a class="navbar-brand" href="{{ url('/users') }}">
+								Users
+							</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->first_name }} {{ Auth::user()->first_name }}<span class="caret"></span>
+                                    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
@@ -81,9 +86,12 @@
 			</div>	
         </main>
 	</div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}"></script>
-    <script src="{{ asset('public/js/jquery.js') }}"></script>
+	
+	@yield('page-script')
+	<script>
+	/* console.log(1)
+	alert(1) */
+	</script>
+	<script src="{{ asset('public/js/app.js') }}" ></script>
 </body>
 </html>

@@ -19,4 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController');
-Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
+Route::post('/upload-image', 'UserController@uploadImage')->name('upload_image');

@@ -13,7 +13,7 @@ class StoreUser extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,14 @@ class StoreUser extends FormRequest
      */
     public function rules()
     {
+		
         return [
-            //
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'phone' => 'required|phone_number|max:15',
+            'email' => 'unique:users,email,'.$this->id.'|required|max:50|email',
+			'password' => 'nullable|string|min:6|confirmed',
+            'profile_image' => 'nullable',
         ];
     }
 }

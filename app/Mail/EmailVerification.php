@@ -16,9 +16,11 @@ class EmailVerification extends Mailable
      *
      * @return void
      */
-    public function __construct()
+	public $user;
+	 
+    public function __construct($user)
     {
-        //
+         $this->user = $user;
     }
 
     /**
@@ -28,6 +30,8 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verify');
+		return $this->subject('Email Verify')->markdown('emails.verify',['user'=>$this->user]);
+				//return $this->view('emails.verify')->with('user', $this->user);
+		//return $this->view('emails.verify');
     }
 }

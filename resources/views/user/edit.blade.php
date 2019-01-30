@@ -7,9 +7,12 @@
                 <div class="panel-heading">Edit Profile</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="{{ url('users.update',$user->id) }}">
-                        {{ csrf_field() }}
-
+                  
+					 <form  class="form-horizontal" method="post" enctype="multipart/form-data" action="{{ route('users.update',[$user->id]) }}">
+						{{  @csrf_field() }}
+						
+						<input type="hidden" name="_method" value="PUT">
+						<input type="hidden" name="id" value="{{$user->id}}">
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <label for="first_name" class="col-md-4 control-label">First Name</label>
 
@@ -70,7 +73,7 @@
                             <label for="password" class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" name="password" >
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -84,7 +87,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" >
                             </div>
                         </div>
 						
@@ -92,7 +95,7 @@
                             <label for="last_name" class="col-md-4 control-label">Profile Image</label>
 
                             <div class="col-md-6">
-                                <input id="profile_image" type="file" class="form-control" name="profile_image" required autofocus>
+                                <input id="profile_image" type="file" class="form-control" name="profile_image"  autofocus>
                                 <input type="hidden" value="{{ $user->profile_image }}" name="old_profile_image">
 
                                 @if ($errors->has('profile_image'))
@@ -101,14 +104,14 @@
                                     </span>
                                 @endif
                             </div>
-							>
+							
                         </div>
 
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Register
+                                    Edit
                                 </button>
                             </div>
                         </div>
@@ -118,12 +121,15 @@
         </div>
     </div>
 </div>
+@endsection
+@section('page-script')
 <script type="text/javscript">
+	console.log(12)
+	alert(21)
 $(document).ready(function (e) {
-    $('#profile_image').on('change',(function(e) {
-        e.preventDefault();
-        
-		console.log($(this).val());
+	$('body').on('blur', '#email', function(e) {
+alert(1)
+      /*   e.preventDefault();
         $.ajax({
             type:'POST',
             url: $(this).attr('action'),
@@ -139,9 +145,8 @@ $(document).ready(function (e) {
                 console.log("error");
                 console.log(data);
             }
-        });
+        }); */
     }));
-
 });
 </script>
 @endsection

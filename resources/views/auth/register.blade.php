@@ -5,9 +5,8 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="{{ route('register') }}">
+					<div class="panel-body">
+                    <form class="form-horizontal" role="form" id="upload_form" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
@@ -105,7 +104,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="submitForm" class="btn btn-primary">
                                     Register
                                 </button>
                             </div>
@@ -116,4 +115,51 @@
         </div>
     </div>
 </div>
+@endsection
+@section('page-script')
+<script>
+	/* $('body').on('submit', '#upload_form', function(e) {
+		e.preventDefault();
+		//var formdata = new FormData(this);
+		$.ajax({
+            type:'POST',
+			headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+            url: "{{route('register')}}",
+            data:new FormData(this),
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                alert(data);
+            },
+            error: function(data){
+                alert(data);
+            }
+        });
+		// $.ajax({
+			// headers: {
+					// 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			// },
+            // type:'POST',
+            // url: "{{route('upload_image')}}",
+           // data:{
+			// logo:new FormData($("#upload_form")[0]),
+			// },
+		  // dataType:'json',
+		  // async:false,
+		  // processData: false,
+		  // contentType: false,
+            // success:function(data){
+                // console.log("success");
+                // console.log(data);
+            // },
+            // error: function(data){
+                // console.log("error");
+                // console.log(data);
+            // }
+        // });
+	}); */
+</script>
 @endsection

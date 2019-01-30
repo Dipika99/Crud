@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreUser;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
 	
 	public function __construct()
     {
-        $this->middleware('auth');	
+       $this->middleware('auth', ['except' => ['uploadImage']]);
     }
     /**
      * Display a listing of the resource.
@@ -76,17 +78,35 @@ class UserController extends Controller
      */
     public function update(StoreUser $request, User $user)
     {
+		
+		if ($request->file('profile_image')) {
+			$uploads = $request->file('profile_image');
+			$fileHash = str_replace('.' . $uploads->extension(), '', $uploads->hashName());
+			$fileName =rand(10,99). time() . '.' . $uploads->getClientOriginalExtension();
+			$path = Storage::putFileAs('public/user/', $uploads, $fileName);
+        
+		}else{
+			$fileName = $request->input('old_profile_image');
+		}
+	
+		if($request->input('password')!=NULL){
+			$password = bcrypt($request->input('password'));
+		}else{
+			$password = $user->password;
+		}
+		
         $userUpdate = User::where('id',$user->id)
 							->update(['first_name'=>$request->input('first_name'),
 					            'last_name'=>$request->input('last_name'),
 								'phone'=>$request->input('phone'),
-								'profile_image'=>$request->input('profile_image'),
+								'profile_image' => $fileName,
 								'email'=>$request->input('email'),
-								'password'=>$request->input('password'),
+								'password'=>$password,
 					   ]);
-		if($companyUpdate){
-			//return redirect()->route('user.index',["company"=>$company->id])
-			//->with('success','Profile updated successfully');
+		if($userUpdate){
+			
+			 return redirect()->route('users.index')->with('success', 'Profile updated successfully.');	
+			
 		}
 		return back()->withInput();
     }
@@ -97,15 +117,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
-    {
-        
-			$userDelete = User::find($user->id);
-			if($userDelete->delete()){
-				return redirect()->route('user.index')
-				->with('success','User deleted successfully');
+   
+	public function uploadImage(Request $request){
+	
+		if ($request->file('logo'))
+		{
+		   return "file undu";
 		}
-		return back()->withInput()->with('error','Company could not be deleted');
+		else{
+			return "file illla";
+		 }
+		\Log::info('file data'.json_encode($_FILE));
 		
-    }
+	}
 }
